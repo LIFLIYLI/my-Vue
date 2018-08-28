@@ -42,13 +42,25 @@
         <p>你要添加的注意事项</p>
         <input type="text" v-model='la'>
         <button v-on:click='hh'>添加</button>
-        <ul v-for='x in y'>
-            <li>{{x}}</li>
-            <button v-on:click='sc'>删除</button>
-        </ul>
+        <todo-item v-for='
+                        (x,index) in y' 
+                        v-bind:z='x' 
+                        v-bind:index='index'
+                        @delete='sc'>
+        </todo-item>       
     </main>
 
     <script>
+            var qwer=("TodoItem",{
+                props:['z','index'],
+            template:"<ul><li>{{z}}</li><button v-on:click='handleItemClick'>删除</button></ul>",
+                methods:{
+                    handleItemClick:function(){
+                        this.$emit('delete',this.index)
+                    }
+                }
+        })
+
         new Vue({
         el:'#kuang',
         data:{
@@ -71,15 +83,19 @@
             y:[],
             la:'', 
         },
+        components:{
+            TodoItem:qwer
+        },
         methods:{
             hh:function(){
                 this.y.push(this.la)
                 this.la=''
-                n=n+1
+
             },
-            sc:function(){
-                this.y.remove(li)
-            }
+            sc:function(index){
+                this.y.splice(index,1)
+            },
+            
         }
     })
     </script>
